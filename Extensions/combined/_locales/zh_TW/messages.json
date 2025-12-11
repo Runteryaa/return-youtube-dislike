@@ -396,7 +396,7 @@
     "message": "按讚比例：$1"
   },
   "premiumTeaser_title": {
-    "message": "不喜歡洞察快覽"
+    "message": "影片分析"
   },
   "premiumTeaser_subtitle": {
     "message": "原始不喜歡數來自觀看此影片的擴充功能使用者的直接回報。"
@@ -414,7 +414,7 @@
     "message": "預估不喜歡數"
   },
   "premiumTeaser_statLikes": {
-    "message": "預估按讚數"
+    "message": "按讚原始數"
   },
   "premiumTeaser_statusLoading": {
     "message": "正在取得最新的不喜歡總數…"

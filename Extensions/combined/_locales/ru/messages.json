@@ -396,7 +396,7 @@
     "message": "Соотношение лайков: $1"
   },
   "premiumTeaser_title": {
-    "message": "Краткий обзор дизлайков"
+    "message": "Аналитика видео"
   },
   "premiumTeaser_subtitle": {
     "message": "Необработанные дизлайки — это прямые сообщения пользователей расширения, смотрящих это видео."
@@ -414,7 +414,7 @@
     "message": "Оценочные дизлайки"
   },
   "premiumTeaser_statLikes": {
-    "message": "Оценочные лайки"
+    "message": "Сырое количество лайков"
   },
   "premiumTeaser_statusLoading": {
     "message": "Получаем последние суммы дизлайков…"

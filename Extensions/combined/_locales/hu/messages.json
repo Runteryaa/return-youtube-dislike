@@ -396,7 +396,7 @@
     "message": "Kedvelési arány: $1"
   },
   "premiumTeaser_title": {
-    "message": "Nem tetszések összefoglalója"
+    "message": "Videóanalitika"
   },
   "premiumTeaser_subtitle": {
     "message": "A nyers nem tetszések az ezt a videót néző bővítményfelhasználók közvetlen jelentései."
@@ -414,7 +414,7 @@
     "message": "Becsült nem tetszések"
   },
   "premiumTeaser_statLikes": {
-    "message": "Becsült kedvelések"
+    "message": "Nyers kedvelések száma"
   },
   "premiumTeaser_statusLoading": {
     "message": "Legfrissebb nemtetszés-összegek lekérése…"

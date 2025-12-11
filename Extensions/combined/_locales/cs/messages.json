@@ -396,7 +396,7 @@
     "message": "Poměr lajků: $1"
   },
   "premiumTeaser_title": {
-    "message": "Přehled statistik dislajků"
+    "message": "Analytika videí"
   },
   "premiumTeaser_subtitle": {
     "message": "Nezpracované dislajky jsou přímá hlášení uživatelů rozšíření sledujících toto video."
@@ -414,7 +414,7 @@
     "message": "Odhadované dislajky"
   },
   "premiumTeaser_statLikes": {
-    "message": "Odhadované lajky"
+    "message": "Hrubý počet lajků"
   },
   "premiumTeaser_statusLoading": {
     "message": "Získávání nejnovějších součtů dislajků…"

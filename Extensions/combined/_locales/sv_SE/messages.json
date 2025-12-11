@@ -396,7 +396,7 @@
     "message": "Gilla-förhållande: $1"
   },
   "premiumTeaser_title": {
-    "message": "Översikt över ogilla-insikter"
+    "message": "Videoanalys"
   },
   "premiumTeaser_subtitle": {
     "message": "Råa ogilla-markeringar är direkta rapporter från tilläggsanvändare som tittar på videon."
@@ -414,7 +414,7 @@
     "message": "Beräknade ogilla-markeringar"
   },
   "premiumTeaser_statLikes": {
-    "message": "Beräknade gilla-markeringar"
+    "message": "Rått antal gilla-markeringar"
   },
   "premiumTeaser_statusLoading": {
     "message": "Hämtar de senaste ogilla-summorna…"

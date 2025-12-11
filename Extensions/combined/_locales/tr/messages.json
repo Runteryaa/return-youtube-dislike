@@ -396,7 +396,7 @@
     "message": "Beğeni oranı: $1"
   },
   "premiumTeaser_title": {
-    "message": "Beğenilmeme içgörüleri özeti"
+    "message": "Video analitiği"
   },
   "premiumTeaser_subtitle": {
     "message": "Ham beğenilmeme sayıları, bu videoyu izleyen uzantı kullanıcılarının doğrudan bildirimleridir."
@@ -414,7 +414,7 @@
     "message": "Tahmini beğenilmeme"
   },
   "premiumTeaser_statLikes": {
-    "message": "Tahmini beğeni"
+    "message": "Ham beğeni sayısı"
   },
   "premiumTeaser_statusLoading": {
     "message": "En son beğenilmeme toplamları alınıyor…"

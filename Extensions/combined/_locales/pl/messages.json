@@ -396,7 +396,7 @@
     "message": "Współczynnik polubień: $1"
   },
   "premiumTeaser_title": {
-    "message": "Podgląd statystyk niepolubień"
+    "message": "Analityka wideo"
   },
   "premiumTeaser_subtitle": {
     "message": "Surowe niepolubienia to bezpośrednie zgłoszenia użytkowników rozszerzenia oglądających ten film."
@@ -414,7 +414,7 @@
     "message": "Szacowane niepolubienia"
   },
   "premiumTeaser_statLikes": {
-    "message": "Szacowane polubienia"
+    "message": "Surowa liczba polubień"
   },
   "premiumTeaser_statusLoading": {
     "message": "Pobieranie najnowszych sum niepolubień…"

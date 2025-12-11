@@ -396,7 +396,7 @@
     "message": "좋아요 비율: $1"
   },
   "premiumTeaser_title": {
-    "message": "싫어요 인사이트 한눈에 보기"
+    "message": "동영상 분석"
   },
   "premiumTeaser_subtitle": {
     "message": "원본 싫어요 수는 이 영상을 시청하는 확장 프로그램 사용자가 직접 보고한 값입니다."
@@ -414,7 +414,7 @@
     "message": "예상 싫어요"
   },
   "premiumTeaser_statLikes": {
-    "message": "예상 좋아요"
+    "message": "원시 좋아요 수"
   },
   "premiumTeaser_statusLoading": {
     "message": "최신 싫어요 합계를 가져오는 중…"

@@ -396,7 +396,7 @@
     "message": "高評価率: $1"
   },
   "premiumTeaser_title": {
-    "message": "低評価インサイトの概要"
+    "message": "動画分析"
   },
   "premiumTeaser_subtitle": {
     "message": "未加工の低評価は、この動画を視聴している拡張機能ユーザーからの直接報告です。"
@@ -414,7 +414,7 @@
     "message": "推定低評価"
   },
   "premiumTeaser_statLikes": {
-    "message": "推定高評価"
+    "message": "生の高評価数"
   },
   "premiumTeaser_statusLoading": {
     "message": "最新の低評価合計を取得中…"

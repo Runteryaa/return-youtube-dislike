@@ -396,7 +396,7 @@
     "message": "点赞比例：$1"
   },
   "premiumTeaser_title": {
-    "message": "点踩洞察速览"
+    "message": "视频分析"
   },
   "premiumTeaser_subtitle": {
     "message": "原始点踩来自正在观看此视频的扩展用户的直接反馈。"
@@ -414,7 +414,7 @@
     "message": "预计点踩数"
   },
   "premiumTeaser_statLikes": {
-    "message": "预计点赞数"
+    "message": "点赞原始数"
   },
   "premiumTeaser_statusLoading": {
     "message": "正在获取最新的点踩总数…"

@@ -396,7 +396,7 @@
     "message": "Bəyənmə nisbəti: $1"
   },
   "premiumTeaser_title": {
-    "message": "Bəyənməmə analitikasının xülasəsi"
+    "message": "Video analitikası"
   },
   "premiumTeaser_subtitle": {
     "message": "Emal olunmamış bəyənməmələr bu videoya baxan uzantı istifadəçilərinin birbaşa hesabatlarıdır."
@@ -414,7 +414,7 @@
     "message": "Təxmini bəyənməmələr"
   },
   "premiumTeaser_statLikes": {
-    "message": "Təxmini bəyənmələr"
+    "message": "Bəyənmələrin xam sayı"
   },
   "premiumTeaser_statusLoading": {
     "message": "Ən son bəyənməmə cəmləri alınır…"

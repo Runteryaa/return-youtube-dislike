@@ -396,7 +396,7 @@
     "message": "Rasio suka: $1"
   },
   "premiumTeaser_title": {
-    "message": "Ringkasan insight tidak suka"
+    "message": "Analitik video"
   },
   "premiumTeaser_subtitle": {
     "message": "Tidak suka mentah adalah laporan langsung dari pengguna ekstensi yang menonton video ini."
@@ -414,7 +414,7 @@
     "message": "Perkiraan tidak suka"
   },
   "premiumTeaser_statLikes": {
-    "message": "Perkiraan suka"
+    "message": "Jumlah suka mentah"
   },
   "premiumTeaser_statusLoading": {
     "message": "Mengambil total tidak suka terbaru…"

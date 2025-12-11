@@ -396,7 +396,7 @@
     "message": "Tỷ lệ lượt thích: $1"
   },
   "premiumTeaser_title": {
-    "message": "Tổng quan nhanh về lượt không thích"
+    "message": "Phân tích video"
   },
   "premiumTeaser_subtitle": {
     "message": "Lượt không thích thô là báo cáo trực tiếp từ người dùng tiện ích đang xem video này."
@@ -414,7 +414,7 @@
     "message": "Ước tính lượt không thích"
   },
   "premiumTeaser_statLikes": {
-    "message": "Ước tính lượt thích"
+    "message": "Số lượt thích thô"
   },
   "premiumTeaser_statusLoading": {
     "message": "Đang lấy tổng lượt không thích mới nhất…"

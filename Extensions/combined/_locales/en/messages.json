@@ -396,7 +396,7 @@
     "message": "Like ratio: $1"
   },
   "premiumTeaser_title": {
-    "message": "Dislike insights snapshot"
+    "message": "Video analytics"
   },
   "premiumTeaser_subtitle": {
     "message": "Raw dislikes are direct reports from extension users watching this video."
@@ -414,7 +414,7 @@
     "message": "Estimated dislikes"
   },
   "premiumTeaser_statLikes": {
-    "message": "Estimated likes"
+    "message": "Raw like count"
   },
   "premiumTeaser_statusLoading": {
     "message": "Getting the latest dislike totals…"

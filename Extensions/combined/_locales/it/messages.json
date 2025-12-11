@@ -396,7 +396,7 @@
     "message": "Rapporto Mi piace: $1"
   },
   "premiumTeaser_title": {
-    "message": "Panoramica delle analisi dei Non mi piace"
+    "message": "Analisi video"
   },
   "premiumTeaser_subtitle": {
     "message": "I Non mi piace grezzi sono segnalazioni dirette degli utenti dell’estensione che guardano questo video."
@@ -414,7 +414,7 @@
     "message": "Non mi piace stimati"
   },
   "premiumTeaser_statLikes": {
-    "message": "Mi piace stimati"
+    "message": "Conteggio grezzo dei Mi piace"
   },
   "premiumTeaser_statusLoading": {
     "message": "Recupero degli ultimi totali di Non mi piace…"

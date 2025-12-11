@@ -396,7 +396,7 @@
     "message": "Proporção de curtidas: $1"
   },
   "premiumTeaser_title": {
-    "message": "Resumo de insights de dislikes"
+    "message": "Análises de vídeo"
   },
   "premiumTeaser_subtitle": {
     "message": "Os dislikes brutos são relatos diretos dos usuários da extensão que assistem a este vídeo."
@@ -414,7 +414,7 @@
     "message": "Dislikes estimados"
   },
   "premiumTeaser_statLikes": {
-    "message": "Curtidas estimadas"
+    "message": "Contagem bruta de curtidas"
   },
   "premiumTeaser_statusLoading": {
     "message": "Obtendo os últimos totais de dislikes…"

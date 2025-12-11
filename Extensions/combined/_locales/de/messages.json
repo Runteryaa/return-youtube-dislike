@@ -396,7 +396,7 @@
     "message": "Like-Verhältnis: $1"
   },
   "premiumTeaser_title": {
-    "message": "Dislike-Insights auf einen Blick"
+    "message": "Videoanalysen"
   },
   "premiumTeaser_subtitle": {
     "message": "Roh-Dislikes sind direkte Meldungen von Erweiterungsnutzern, die dieses Video ansehen."
@@ -414,7 +414,7 @@
     "message": "Geschätzte Dislikes"
   },
   "premiumTeaser_statLikes": {
-    "message": "Geschätzte Likes"
+    "message": "Rohzahl der Likes"
   },
   "premiumTeaser_statusLoading": {
     "message": "Neueste Dislike-Gesamtwerte werden abgerufen…"

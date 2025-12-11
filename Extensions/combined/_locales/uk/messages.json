@@ -396,7 +396,7 @@
     "message": "Співвідношення лайків: $1"
   },
   "premiumTeaser_title": {
-    "message": "Короткий огляд дизлайків"
+    "message": "Аналітика відео"
   },
   "premiumTeaser_subtitle": {
     "message": "Необроблені дизлайки — це прямі звіти користувачів розширення, які дивляться це відео."
@@ -414,7 +414,7 @@
     "message": "Орієнтовні дизлайки"
   },
   "premiumTeaser_statLikes": {
-    "message": "Орієнтовні лайки"
+    "message": "Сира кількість вподобань"
   },
   "premiumTeaser_statusLoading": {
     "message": "Отримуємо найсвіжіші суми дизлайків…"

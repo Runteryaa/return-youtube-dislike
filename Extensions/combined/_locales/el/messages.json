@@ -396,7 +396,7 @@
     "message": "Αναλογία likes: $1"
   },
   "premiumTeaser_title": {
-    "message": "Στιγμιότυπο στατιστικών dislikes"
+    "message": "Αναλυτικά στοιχεία βίντεο"
   },
   "premiumTeaser_subtitle": {
     "message": "Τα ανεπεξέργαστα dislikes είναι άμεσες αναφορές χρηστών της επέκτασης που βλέπουν αυτό το βίντεο."
@@ -414,7 +414,7 @@
     "message": "Εκτιμώμενα dislikes"
   },
   "premiumTeaser_statLikes": {
-    "message": "Εκτιμώμενα likes"
+    "message": "Ανεπεξέργαστος αριθμός likes"
   },
   "premiumTeaser_statusLoading": {
     "message": "Λήψη των πιο πρόσφατων συνολικών dislikes…"

@@ -396,7 +396,7 @@
     "message": "Ratio de J’aime : $1"
   },
   "premiumTeaser_title": {
-    "message": "Aperçu des insights des Je n’aime pas"
+    "message": "Analytique vidéo"
   },
   "premiumTeaser_subtitle": {
     "message": "Les Je n’aime pas bruts sont les signalements directs des utilisateurs de l’extension qui regardent cette vidéo."
@@ -414,7 +414,7 @@
     "message": "Je n’aime pas estimés"
   },
   "premiumTeaser_statLikes": {
-    "message": "J’aime estimés"
+    "message": "Nombre brut de mentions J’aime"
   },
   "premiumTeaser_statusLoading": {
     "message": "Récupération des derniers totaux de Je n’aime pas…"
