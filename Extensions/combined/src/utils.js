@@ -1,5 +1,18 @@
 import { extConfig, isShorts } from "./state";
 
+const DEFAULT_SHORTS_LOADED_SELECTORS = {
+  containers: [".reel-video-in-sequence-new"],
+  thumbnail: [".reel-video-in-sequence-thumbnail"],
+  renderer: ["ytd-reel-video-renderer"],
+  overlay: ["#experiment-overlay"],
+};
+
+const DEFAULT_VIDEO_LOADED_SELECTORS = [
+  "ytd-watch-grid[video-id='{videoId}']",
+  "ytd-watch-flexy[video-id='{videoId}']",
+  '#player[loading="false"]:not([hidden])',
+];
+
 function numberFormat(numberState) {
   return getNumberFormatter(extConfig.numberDisplayFormat).format(numberState);
 }
@@ -113,20 +126,22 @@ function isInViewport(element) {
 function isShortsLoaded(videoId) {
   if (!videoId) return false;
 
+  const selectors = extConfig.selectors.shortsLoaded ?? DEFAULT_SHORTS_LOADED_SELECTORS;
+
   // Find all reel containers
-  const reelContainers = document.querySelectorAll(".reel-video-in-sequence-new");
+  const reelContainers = querySelectorAll(selectors.containers);
 
   for (const container of reelContainers) {
     // Check if this container's thumbnail matches our video ID
-    const thumbnail = container.querySelector(".reel-video-in-sequence-thumbnail");
+    const thumbnail = querySelector(selectors.thumbnail, container);
     if (thumbnail) {
       const bgImage = thumbnail.style.backgroundImage;
       // YouTube thumbnail URLs contain the video ID in the format: /vi/VIDEO_ID/
       if ((bgImage && bgImage.includes(`/${videoId}/`)) || (!bgImage && isInViewport(container))) {
         // Check if this container has the renderer with visible experiment-overlay
-        const renderer = container.querySelector("ytd-reel-video-renderer");
+        const renderer = querySelector(selectors.renderer, container);
         if (renderer) {
-          const experimentOverlay = renderer.querySelector("#experiment-overlay");
+          const experimentOverlay = querySelector(selectors.overlay, renderer);
           if (
             experimentOverlay &&
             !experimentOverlay.hidden &&
@@ -151,15 +166,10 @@ function isVideoLoaded() {
     return isShortsLoaded(videoId);
   }
 
+  const videoLoadedSelectors = extConfig.selectors.videoLoaded ?? DEFAULT_VIDEO_LOADED_SELECTORS;
+
   // Regular video checks
-  return (
-    // desktop: spring 2024 UI
-    document.querySelector(`ytd-watch-grid[video-id='${videoId}']`) !== null ||
-    // desktop: older UI
-    document.querySelector(`ytd-watch-flexy[video-id='${videoId}']`) !== null ||
-    // mobile: no video-id attribute
-    document.querySelector('#player[loading="false"]:not([hidden])') !== null
-  );
+  return querySelector(videoLoadedSelectors.map((selector) => selector.replace("{videoId}", videoId))) !== undefined;
 }
 
 const originalConsole = {
@@ -210,7 +220,8 @@ function getColorFromTheme(voteIsLike) {
 
 function querySelector(selectors, element) {
   let result;
-  for (const selector of selectors) {
+  for (const selector of Array.isArray(selectors) ? selectors : [selectors]) {
+    if (!selector) continue;
     result = (element ?? document).querySelector(selector);
     if (result !== null) {
       return result;
@@ -220,13 +231,14 @@ function querySelector(selectors, element) {
 
 function querySelectorAll(selectors) {
   let result;
-  for (const selector of selectors) {
+  for (const selector of Array.isArray(selectors) ? selectors : [selectors]) {
+    if (!selector) continue;
     result = document.querySelectorAll(selector);
     if (result.length !== 0) {
       return result;
     }
   }
-  return result;
+  return result ?? document.querySelectorAll("__ryd-missing-selector__");
 }
 
 function createObserver(options, callback) {

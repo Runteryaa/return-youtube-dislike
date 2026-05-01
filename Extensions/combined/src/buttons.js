@@ -1,6 +1,14 @@
 import { isMobile, isShorts, extConfig } from "./state";
 import { isInViewport, querySelector, querySelectorAll } from "./utils";
 
+function getNativeButton(buttonContainer) {
+  return querySelector(extConfig.selectors.buttons.nativeButton, buttonContainer);
+}
+
+function isSegmentedButtonLayout() {
+  return querySelector(extConfig.selectors.buttons.segmentedContainer, getButtons()) !== undefined;
+}
+
 function getButtons() {
   //---   If Watching Youtube Shorts:   ---//
   if (isShorts()) {
@@ -34,17 +42,10 @@ function getButtons() {
 }
 
 function getLikeButton() {
-  return getButtons().children[0].tagName ===
-    "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
+  return isSegmentedButtonLayout()
     ? querySelector(extConfig.selectors.buttons.likeButton.segmented) ??
-        querySelector(
-          extConfig.selectors.buttons.likeButton.segmentedGetButtons,
-          getButtons(),
-        )
-    : querySelector(
-        extConfig.selectors.buttons.likeButton.notSegmented,
-        getButtons(),
-      );
+        querySelector(extConfig.selectors.buttons.likeButton.segmentedGetButtons, getButtons())
+    : querySelector(extConfig.selectors.buttons.likeButton.notSegmented, getButtons());
 }
 
 function getLikeTextContainer() {
@@ -52,57 +53,52 @@ function getLikeTextContainer() {
 }
 
 function getDislikeButton() {
-  if (
-    getButtons().children[0].tagName ===
-    "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
-  ) {
+  if (isSegmentedButtonLayout()) {
     return (
       querySelector(extConfig.selectors.buttons.dislikeButton.segmented) ??
-      querySelector(
-        extConfig.selectors.buttons.dislikeButton.segmentedGetButtons,
-        getButtons(),
-      )
+      querySelector(extConfig.selectors.buttons.dislikeButton.segmentedGetButtons, getButtons())
     );
   }
 
-  const notSegmentedMatch = querySelector(
-    extConfig.selectors.buttons.dislikeButton.notSegmented,
-    getButtons(),
-  );
+  const notSegmentedMatch = querySelector(extConfig.selectors.buttons.dislikeButton.notSegmented, getButtons());
 
   if (notSegmentedMatch != null) {
     return notSegmentedMatch;
   }
 
   if (isShorts()) {
-    return querySelector(["#dislike-button"], getButtons());
+    return querySelector(extConfig.selectors.buttons.dislikeButton.shortsFallback, getButtons());
   }
 
   return null;
 }
 
+function getTextContainerTemplate() {
+  const likeButton = getLikeButton();
+  const parentTemplate =
+    querySelector(extConfig.selectors.likeTextContainerTemplateParent, likeButton) ??
+    querySelector(extConfig.selectors.likeTextContainerTemplateParent);
+
+  return querySelector(extConfig.selectors.likeTextContainerTemplate, likeButton) ?? parentTemplate?.parentNode;
+}
+
+function updateDislikeButtonShape(dislikeButton) {
+  for (const className of extConfig.selectors.buttonClasses.iconButton) {
+    dislikeButton.classList.remove(className);
+  }
+
+  for (const className of extConfig.selectors.buttonClasses.iconLeading) {
+    dislikeButton.classList.add(className);
+  }
+}
+
 function createDislikeTextContainer() {
-  const textNodeClone = (
-    getLikeButton().querySelector(
-      ".yt-spec-button-shape-next__button-text-content",
-    ) ||
-    getLikeButton().querySelector("button > div[class*='cbox']") ||
-    (
-      getLikeButton().querySelector('div > span[role="text"]') ||
-      document.querySelector(
-        'button > div.yt-spec-button-shape-next__button-text-content > span[role="text"]',
-      )
-    ).parentNode
-  ).cloneNode(true);
-  const insertPreChild = getDislikeButton().querySelector("button");
+  const textNodeClone = getTextContainerTemplate().cloneNode(true);
+  const dislikeButton = getNativeButton(getDislikeButton());
+  const insertPreChild = dislikeButton;
   insertPreChild.insertBefore(textNodeClone, null);
-  getDislikeButton()
-    .querySelector("button")
-    .classList.remove("yt-spec-button-shape-next--icon-button");
-  getDislikeButton()
-    .querySelector("button")
-    .classList.add("yt-spec-button-shape-next--icon-leading");
-  if (textNodeClone.querySelector("span[role='text']") === null) {
+  updateDislikeButtonShape(dislikeButton);
+  if (querySelector(extConfig.selectors.textContainerInner, textNodeClone) === undefined) {
     const span = document.createElement("span");
     span.setAttribute("role", "text");
     while (textNodeClone.firstChild) {
@@ -116,11 +112,13 @@ function createDislikeTextContainer() {
 
 function getDislikeTextContainer() {
   let result;
+  const nativeDislikeButton = getNativeButton(getDislikeButton());
   for (const selector of extConfig.selectors.dislikeTextContainer) {
     result = getDislikeButton().querySelector(selector);
-    if (result !== null) {
+    if (result !== null && result !== nativeDislikeButton) {
       break;
     }
+    result = null;
   }
   if (result == null) {
     result = createDislikeTextContainer();
@@ -129,11 +127,7 @@ function getDislikeTextContainer() {
 }
 
 function checkForSignInButton() {
-  if (
-    document.querySelector(
-      "a[href^='https://accounts.google.com/ServiceLogin']",
-    )
-  ) {
+  if (querySelector(extConfig.selectors.signInButton)) {
     return true;
   } else {
     return false;

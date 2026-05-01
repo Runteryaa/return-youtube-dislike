@@ -12,7 +12,10 @@
     "128": "icons/icon128.png"
   },
   "host_permissions": [
-    "*://*.youtube.com/*"
+    "*://*.youtube.com/*",
+    "*://returnyoutubedislikeapi.com/*",
+    "https://localhost:7258/*",
+    "http://localhost:7258/*"
   ],
   "permissions": [
     "storage"

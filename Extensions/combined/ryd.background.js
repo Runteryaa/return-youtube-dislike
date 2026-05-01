@@ -235,6 +235,62 @@ api.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
     })();
     return true;
+  } else if (request.message === "github_oauth_login") {
+    (async () => {
+      try {
+        const idApi = getIdentityApi();
+        if (
+          !idApi ||
+          typeof (idApi.getRedirectURL || (isChrome() && chrome.identity && chrome.identity.getRedirectURL)) !==
+            "function"
+        ) {
+          sendResponse({ success: false, error: "identity API not available" });
+          return;
+        }
+
+        const redirectUri =
+          isFirefox() && browser.identity.getRedirectURL
+            ? browser.identity.getRedirectURL()
+            : isChrome() && chrome.identity.getRedirectURL
+              ? chrome.identity.getRedirectURL()
+              : "";
+
+        const startRes = await fetch(
+          getApiEndpoint(`/api/auth/github/login?redirectUri=${encodeURIComponent(redirectUri)}`),
+        );
+        const startData = await startRes.json();
+
+        const responseUrl = await launchWebAuthFlow(startData.authUrl);
+        const { code, state } = extractOAuthParams(responseUrl);
+        if (!code) {
+          sendResponse({ success: false, error: "No authorization code received" });
+          return;
+        }
+
+        const exchangeRes = await fetch(getApiEndpoint("/api/auth/github/exchange"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code,
+            state,
+            expectedState: startData.state,
+            redirectUri: startData.redirectUri || redirectUri,
+          }),
+        });
+        const authData = await exchangeRes.json();
+        if (authData && authData.success) {
+          handlePatreonAuthComplete(authData.user, authData.sessionToken, () => {
+            sendResponse({ success: true, user: authData.user });
+          });
+        } else {
+          sendResponse({ success: false, error: (authData && authData.error) || "OAuth exchange failed" });
+        }
+      } catch (e) {
+        console.error("github_oauth_login error", e);
+        sendResponse({ success: false, error: String((e && e.message) || e) });
+      }
+    })();
+    return true;
   }
 });
 

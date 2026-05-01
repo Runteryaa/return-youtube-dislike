@@ -1,15 +1,5 @@
-import {
-  getBrowser,
-  getVideoId,
-  numberFormat,
-  createObserver,
-} from "./utils";
-import {
-  checkForSignInButton,
-  getButtons,
-  getDislikeButton,
-  getLikeButton,
-} from "./buttons";
+import { getBrowser, getVideoId, numberFormat, createObserver, querySelector } from "./utils";
+import { checkForSignInButton, getButtons, getDislikeButton, getLikeButton } from "./buttons";
 import {
   NEUTRAL_STATE,
   LIKED_STATE,
@@ -122,11 +112,8 @@ function createSmartimationObserver() {
     smartimationObserver.container = null;
   }
 
-  const smartimationContainer = getButtons().querySelector("yt-smartimation");
-  if (
-    smartimationContainer &&
-    smartimationObserver.container != smartimationContainer
-  ) {
+  const smartimationContainer = querySelector(extConfig.selectors.buttons.smartimation, getButtons());
+  if (smartimationContainer && smartimationObserver.container != smartimationContainer) {
     console.log("Initializing smartimation mutation observer");
     smartimationObserver.disconnect();
     smartimationObserver.observe(smartimationContainer);
@@ -136,9 +123,7 @@ function createSmartimationObserver() {
 
 function storageChangeHandler(changes, area) {
   if (changes.disableVoteSubmission !== undefined) {
-    handleDisableVoteSubmissionChangeEvent(
-      changes.disableVoteSubmission.newValue,
-    );
+    handleDisableVoteSubmissionChangeEvent(changes.disableVoteSubmission.newValue);
   }
   if (changes.coloredThumbs !== undefined) {
     handleColoredThumbsChangeEvent(changes.coloredThumbs.newValue);
@@ -153,14 +138,10 @@ function storageChangeHandler(changes, area) {
     handleNumberDisplayFormatChangeEvent(changes.numberDisplayFormat.newValue);
   }
   if (changes.numberDisplayReformatLikes !== undefined) {
-    handleNumberDisplayReformatLikesChangeEvent(
-      changes.numberDisplayReformatLikes.newValue,
-    );
+    handleNumberDisplayReformatLikesChangeEvent(changes.numberDisplayReformatLikes.newValue);
   }
   if (changes.hidePremiumTeaser !== undefined) {
-    handleHidePremiumTeaserChangeEvent(
-      changes.hidePremiumTeaser.newValue,
-    );
+    handleHidePremiumTeaserChangeEvent(changes.hidePremiumTeaser.newValue);
   }
 }
 

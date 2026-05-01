@@ -15,6 +15,113 @@ const LIKED_STATE = "LIKED_STATE";
 const DISLIKED_STATE = "DISLIKED_STATE";
 const NEUTRAL_STATE = "NEUTRAL_STATE";
 
+const DEFAULT_SELECTORS = {
+  dislikeTextContainer: [
+    ".yt-spec-button-shape-next__button-text-content",
+    ".ytSpecButtonShapeNextButtonTextContent",
+    "#text",
+    "yt-formatted-string",
+    "span[role='text']",
+  ],
+  likeTextContainer: [
+    ".yt-spec-button-shape-next__button-text-content",
+    ".ytSpecButtonShapeNextButtonTextContent",
+    "#text",
+    "yt-formatted-string",
+    "span[role='text']",
+  ],
+  likeTextContainerTemplate: [
+    ".yt-spec-button-shape-next__button-text-content",
+    ".ytSpecButtonShapeNextButtonTextContent",
+    "button > div[class*='cbox']",
+  ],
+  likeTextContainerTemplateParent: [
+    'div > span[role="text"]',
+    'button > div.yt-spec-button-shape-next__button-text-content > span[role="text"]',
+  ],
+  textContainerInner: ["span[role='text']"],
+  buttons: {
+    shorts: {
+      mobile: ["ytm-like-button-renderer"],
+      desktop: ["reel-action-bar-view-model", "#like-button > ytd-like-button-renderer"],
+    },
+    regular: {
+      mobile: [".slim-video-action-bar-actions"],
+      desktopMenu: ["ytd-menu-renderer.ytd-watch-metadata > div"],
+      desktopNoMenu: ["#top-level-buttons-computed"],
+    },
+    segmentedContainer: ["ytd-segmented-like-dislike-button-renderer"],
+    nativeButton: ["button"],
+    mobileText: [".button-renderer-text"],
+    shortsToggleButton: ["tp-yt-paper-button#button"],
+    smartimation: ["yt-smartimation"],
+    likeButton: {
+      segmented: ["#segmented-like-button"],
+      segmentedGetButtons: [":first-child > :first-child"],
+      notSegmented: ["like-button-view-model", ":first-child"],
+    },
+    dislikeButton: {
+      segmented: ["#segmented-dislike-button"],
+      segmentedGetButtons: [":first-child > :nth-child(2)"],
+      notSegmented: ["dislike-button-view-model", ":nth-child(2)", "#dislike-button"],
+      shortsFallback: ["#dislike-button"],
+    },
+  },
+  buttonClasses: {
+    iconButton: ["yt-spec-button-shape-next--icon-button", "ytSpecButtonShapeNextIconButton"],
+    iconLeading: ["yt-spec-button-shape-next--icon-leading", "ytSpecButtonShapeNextIconLeading"],
+  },
+  activeButtonClasses: ["style-default-active"],
+  likeCountButton: ["yt-formatted-string#text", "button"],
+  videoLoaded: [
+    "ytd-watch-grid[video-id='{videoId}']",
+    "ytd-watch-flexy[video-id='{videoId}']",
+    '#player[loading="false"]:not([hidden])',
+  ],
+  shortsLoaded: {
+    containers: [".reel-video-in-sequence-new"],
+    thumbnail: [".reel-video-in-sequence-thumbnail"],
+    renderer: ["ytd-reel-video-renderer"],
+    overlay: ["#experiment-overlay"],
+  },
+  rateBar: {
+    newDesignActions: ["#top-level-buttons-computed"],
+    oldDesignActions: ["#menu-container"],
+    mobileActionBar: ["ytm-slim-video-action-bar-renderer"],
+    topRow: ["#top-row"],
+    actionsInner: ["#actions-inner"],
+    actions: ["#actions"],
+  },
+  signInButton: ["a[href^='https://accounts.google.com/ServiceLogin']"],
+  menuContainer: ["#menu-container"],
+  roundedDesign: ["#segmented-like-button", "like-button-view-model"],
+};
+
+function cloneConfig(value) {
+  if (value === undefined) return undefined;
+  return JSON.parse(JSON.stringify(value));
+}
+
+function mergeConfig(defaultValue, apiValue) {
+  if (apiValue === undefined || apiValue === null) {
+    return cloneConfig(defaultValue);
+  }
+
+  if (Array.isArray(apiValue)) {
+    return [...apiValue];
+  }
+
+  if (typeof apiValue !== "object" || Array.isArray(defaultValue)) {
+    return apiValue;
+  }
+
+  const merged = cloneConfig(defaultValue ?? {});
+  for (const [key, value] of Object.entries(apiValue)) {
+    merged[key] = mergeConfig(defaultValue?.[key], value);
+  }
+  return merged;
+}
+
 let extConfig = {
   disableVoteSubmission: false,
   disableLogging: false,
@@ -26,33 +133,7 @@ let extConfig = {
   tooltipPercentageMode: "dash_like",
   numberDisplayReformatLikes: false,
   hidePremiumTeaser: false,
-  selectors: {
-    dislikeTextContainer: [],
-    likeTextContainer: [],
-    buttons: {
-      shorts: {
-        mobile: [],
-        desktop: [],
-      },
-      regular: {
-        mobile: [],
-        desktopMenu: [],
-        desktopNoMenu: [],
-      },
-      likeButton: {
-        segmented: [],
-        segmentedGetButtons: [],
-        notSegmented: [],
-      },
-      dislikeButton: {
-        segmented: [],
-        segmentedGetButtons: [],
-        notSegmented: [],
-      },
-    },
-    menuContainer: [],
-    roundedDesign: [],
-  },
+  selectors: cloneConfig(DEFAULT_SELECTORS),
 };
 
 let storedData = {
@@ -112,28 +193,30 @@ if (isShorts() && !shortsObserver) {
 function isLikesDisabled() {
   // return true if the like button's text doesn't contain any number
   if (isMobile()) {
-    return /^\D*$/.test(getButtons().children[0].querySelector(".button-renderer-text").innerText);
+    return /^\D*$/.test(querySelector(extConfig.selectors.buttons.mobileText, getButtons().children[0]).innerText);
   }
   return /^\D*$/.test(getLikeTextContainer().innerText);
 }
 
 function isVideoLiked() {
+  const likeButton = querySelector(extConfig.selectors.buttons.nativeButton, getLikeButton());
   if (isMobile()) {
-    return getLikeButton().querySelector("button").getAttribute("aria-label") === "true";
+    return likeButton.getAttribute("aria-label") === "true";
   }
   return (
-    getLikeButton().classList.contains("style-default-active") ||
-    getLikeButton().querySelector("button")?.getAttribute("aria-pressed") === "true"
+    extConfig.selectors.activeButtonClasses.some((className) => getLikeButton().classList.contains(className)) ||
+    likeButton?.getAttribute("aria-pressed") === "true"
   );
 }
 
 function isVideoDisliked() {
+  const dislikeButton = querySelector(extConfig.selectors.buttons.nativeButton, getDislikeButton());
   if (isMobile()) {
-    return getDislikeButton().querySelector("button").getAttribute("aria-label") === "true";
+    return dislikeButton.getAttribute("aria-label") === "true";
   }
   return (
-    getDislikeButton().classList.contains("style-default-active") ||
-    getDislikeButton().querySelector("button")?.getAttribute("aria-pressed") === "true"
+    extConfig.selectors.activeButtonClasses.some((className) => getDislikeButton().classList.contains(className)) ||
+    dislikeButton?.getAttribute("aria-pressed") === "true"
   );
 }
 
@@ -162,14 +245,15 @@ function setDislikes(dislikesCount) {
   let _dislikeText;
   if (!isLikesDisabled()) {
     if (isMobile()) {
-      getButtons().children[1].querySelector(".button-renderer-text").innerText = dislikesCount;
+      querySelector(extConfig.selectors.buttons.mobileText, getButtons().children[1]).innerText = dislikesCount;
       return;
     }
     _dislikeText = dislikesCount;
   } else {
     console.log("likes count disabled by creator");
     if (isMobile()) {
-      getButtons().children[1].querySelector(".button-renderer-text").innerText = localize("TextLikesDisabled");
+      querySelector(extConfig.selectors.buttons.mobileText, getButtons().children[1]).innerText =
+        localize("TextLikesDisabled");
       return;
     }
     _dislikeText = localize("TextLikesDisabled");
@@ -188,8 +272,7 @@ function getLikeCountFromButton() {
       return false;
     }
 
-    let likeButton =
-      getLikeButton().querySelector("yt-formatted-string#text") ?? getLikeButton().querySelector("button");
+    let likeButton = querySelector(extConfig.selectors.likeCountButton, getLikeButton());
 
     let likesStr = likeButton.getAttribute("aria-label").replace(/\D/g, "");
     return likesStr.length > 0 ? parseInt(likesStr) : false;
@@ -213,8 +296,8 @@ function processResponse(response, storedData) {
   if (extConfig.coloredThumbs === true) {
     if (isShorts()) {
       // for shorts, leave deactivated buttons in default color
-      let shortLikeButton = getLikeButton().querySelector("tp-yt-paper-button#button");
-      let shortDislikeButton = getDislikeButton().querySelector("tp-yt-paper-button#button");
+      let shortLikeButton = querySelector(extConfig.selectors.buttons.shortsToggleButton, getLikeButton());
+      let shortDislikeButton = querySelector(extConfig.selectors.buttons.shortsToggleButton, getDislikeButton());
       if (shortLikeButton.getAttribute("aria-pressed") === "true") {
         shortLikeButton.style.color = getColorFromTheme(true);
       }
@@ -228,6 +311,7 @@ function processResponse(response, storedData) {
       getDislikeButton().style.color = getColorFromTheme(false);
     }
   }
+
   //Temporary disabling this - it breaks all places where getButtons()[1] is used
   // createStarRating(response.rating, isMobile());
 }
@@ -296,7 +380,7 @@ async function initializeSelectors() {
     .catch((error) => {
       console.error("Error fetching selectors:", error);
     });
-  extConfig.selectors = result ?? extConfig.selectors;
+  extConfig.selectors = mergeConfig(DEFAULT_SELECTORS, result);
   console.log(result);
 }
 

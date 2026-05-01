@@ -1,13 +1,6 @@
 import { getButtons, getDislikeButton, getLikeButton } from "./buttons";
-import {
-  extConfig,
-  isMobile,
-  isLikesDisabled,
-  isNewDesign,
-  isRoundedDesign,
-  isShorts,
-} from "./state";
-import { getColorFromTheme, isInViewport } from "./utils";
+import { extConfig, isMobile, isLikesDisabled, isNewDesign, isRoundedDesign, isShorts } from "./state";
+import { getColorFromTheme, isInViewport, querySelector } from "./utils";
 
 function createRateBar(likes, dislikes) {
   let rateBar = document.getElementById("ryd-bar-container");
@@ -23,8 +16,7 @@ function createRateBar(likes, dislikes) {
       parseFloat(window.getComputedStyle(getDislikeButton()).width) +
       (isRoundedDesign() ? 0 : 8);
 
-    const widthPercent =
-      likes + dislikes > 0 ? (likes / (likes + dislikes)) * 100 : 50;
+    const widthPercent = likes + dislikes > 0 ? (likes / (likes + dislikes)) * 100 : 50;
 
     var likePercentage = parseFloat(widthPercent.toFixed(1));
     const dislikePercentage = (100 - likePercentage).toLocaleString();
@@ -61,13 +53,10 @@ function createRateBar(likes, dislikes) {
           colorDislikeStyle = "; background-color: " + getColorFromTheme(false);
         }
         let actions =
-          isNewDesign() && getButtons().id === "top-level-buttons-computed"
+          isNewDesign() && getButtons() === querySelector(extConfig.selectors.rateBar.newDesignActions)
             ? getButtons()
-            : document.getElementById("menu-container");
-        (
-          actions ||
-          document.querySelector("ytm-slim-video-action-bar-renderer")
-        ).insertAdjacentHTML(
+            : querySelector(extConfig.selectors.rateBar.oldDesignActions);
+        (actions || querySelector(extConfig.selectors.rateBar.mobileActionBar)).insertAdjacentHTML(
           "beforeend",
           `
               <div class="ryd-tooltip ryd-tooltip-${isNewDesign() ? "new" : "old"}-design" style="width: ${widthPx}px">
@@ -91,28 +80,23 @@ function createRateBar(likes, dislikes) {
 
         if (isNewDesign()) {
           // Add border between info and comments
-          let descriptionAndActionsElement = document.getElementById("top-row");
-          descriptionAndActionsElement.style.borderBottom =
-            "1px solid var(--yt-spec-10-percent-layer)";
+          let descriptionAndActionsElement = querySelector(extConfig.selectors.rateBar.topRow);
+          descriptionAndActionsElement.style.borderBottom = "1px solid var(--yt-spec-10-percent-layer)";
           descriptionAndActionsElement.style.paddingBottom = "10px";
 
           // Fix like/dislike ratio bar offset in new UI
-          document.getElementById("actions-inner").style.width = "revert";
+          querySelector(extConfig.selectors.rateBar.actionsInner).style.width = "revert";
           if (isRoundedDesign()) {
-            document.getElementById("actions").style.flexDirection =
-              "row-reverse";
+            querySelector(extConfig.selectors.rateBar.actions).style.flexDirection = "row-reverse";
           }
         }
       } else {
         document.querySelector(`.ryd-tooltip`).style.width = widthPx + "px";
         document.getElementById("ryd-bar").style.width = widthPercent + "%";
-        document.querySelector("#ryd-dislike-tooltip > #tooltip").innerHTML =
-          tooltipInnerHTML;
+        document.querySelector("#ryd-dislike-tooltip > #tooltip").innerHTML = tooltipInnerHTML;
         if (extConfig.coloredBar) {
-          document.getElementById("ryd-bar-container").style.backgroundColor =
-            getColorFromTheme(false);
-          document.getElementById("ryd-bar").style.backgroundColor =
-            getColorFromTheme(true);
+          document.getElementById("ryd-bar-container").style.backgroundColor = getColorFromTheme(false);
+          document.getElementById("ryd-bar").style.backgroundColor = getColorFromTheme(true);
         }
       }
     }

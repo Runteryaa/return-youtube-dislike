@@ -99,6 +99,7 @@ describe("premiumAnalytics.teaser", () => {
           dislikes: 123,
           rawDislikes: 456,
           likes: 789,
+          rawLikes: 654,
         }),
     });
   });
@@ -125,13 +126,37 @@ describe("premiumAnalytics.teaser", () => {
     expect(panel).not.toBeNull();
     expect(global.fetch).toHaveBeenCalledWith("https://api.test/votes?videoId=abcdefghijk", expect.any(Object));
 
-    const raw = panel.querySelector("#ryd-premium-teaser-raw")?.textContent;
-    const dislikes = panel.querySelector("#ryd-premium-teaser-dislikes")?.textContent;
     const likes = panel.querySelector("#ryd-premium-teaser-likes")?.textContent;
+    const dislikes = panel.querySelector("#ryd-premium-teaser-dislikes")?.textContent;
+    const details = panel.querySelector("#ryd-premium-teaser-details");
 
-    expect(raw).toBe("456");
-    expect(dislikes).toBe("123");
-    expect(likes).toBe("789");
+    expect(likes).toBe("654");
+    expect(dislikes).toBe("456");
+    expect(panel?.classList.contains("is-collapsed")).toBe(true);
+    expect(details?.hasAttribute("hidden")).toBe(true);
+  });
+
+  it("toggles the expanded state when the toggle is clicked", async () => {
+    getVideoId.mockReturnValue("togglevideo");
+
+    await initPremiumTeaser();
+    await flushPromises();
+
+    const panel = document.querySelector(".ryd-premium-teaser");
+    expect(panel).not.toBeNull();
+
+    const toggle = panel.querySelector("#ryd-premium-teaser-toggle");
+    const details = panel.querySelector("#ryd-premium-teaser-details");
+
+    expect(toggle?.getAttribute("aria-expanded")).toBe("false");
+    expect(details?.hasAttribute("hidden")).toBe(true);
+
+    toggle?.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+    await flushPromises();
+
+    expect(panel?.classList.contains("is-expanded")).toBe(true);
+    expect(toggle?.getAttribute("aria-expanded")).toBe("true");
+    expect(details?.hasAttribute("hidden")).toBe(false);
   });
 
   it("removes the panel when suppressed and restores it when unsuppressed", async () => {

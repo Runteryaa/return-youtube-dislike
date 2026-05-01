@@ -99,6 +99,7 @@ function initPatreonAuth() {
   const loggedOutView = document.getElementById("patreon-logged-out");
   const loggedInView = document.getElementById("patreon-logged-in");
   const loginBtn = document.getElementById("patreon-login-btn");
+  const githubLoginBtn = document.getElementById("github-login-btn");
   const logoutBtn = document.getElementById("patreon-logout-btn");
   const userAvatar = document.getElementById("patreon-user-avatar");
   const userName = document.getElementById("patreon-user-name");
@@ -334,6 +335,33 @@ function initPatreonAuth() {
       });
     });
   });
+
+  if (githubLoginBtn) {
+    githubLoginBtn.addEventListener("click", () => {
+      ensureIdentityPermission(async (granted) => {
+        const identityNow = getIdentityApi();
+        if (!granted || !identityNow || typeof identityNow.getRedirectURL !== "function") {
+          alert(chrome.i18n.getMessage("patreonPermissionRequired"));
+          return;
+        }
+
+        chrome.runtime.sendMessage({ message: "github_oauth_login" }, (resp) => {
+          if (chrome.runtime && chrome.runtime.lastError) {
+            console.error("GitHub login failed:", chrome.runtime.lastError.message);
+            alert(chrome.i18n.getMessage("githubLoginStartFailed"));
+            return;
+          }
+          if (resp && resp.success) {
+            const user = resp.user;
+            showLoggedInView(user);
+          } else {
+            console.error("GitHub login failed:", resp && resp.error);
+            alert(chrome.i18n.getMessage("githubLoginCompleteFailed"));
+          }
+        });
+      });
+    });
+  }
 
   logoutBtn.addEventListener("click", () => {
     chrome.storage.sync.remove(["patreonUser", "patreonSessionToken"], () => {
