@@ -66,7 +66,7 @@ class MirrorJsOutputsPlugin {
   }
 }
 
-module.exports = {
+module.exports = (env, argv) => ({
   entry: Object.fromEntries(
     entries.map((entry) => [entry, path.join(__dirname, "./Extensions/combined/", `${entry}.js`)]),
   ),
@@ -132,5 +132,5 @@ module.exports = {
   experiments: {
     topLevelAwait: true,
   },
-  devtool: "inline-source-map",
-};
+  devtool: argv.mode === "development" ? "inline-source-map" : false,
+});
