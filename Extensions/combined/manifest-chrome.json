@@ -13,9 +13,7 @@
   },
   "host_permissions": [
     "*://*.youtube.com/*",
-    "*://returnyoutubedislikeapi.com/*",
-    "https://localhost:7258/*",
-    "http://localhost:7258/*"
+    "*://returnyoutubedislikeapi.com/*"
   ],
   "permissions": [
     "storage"
